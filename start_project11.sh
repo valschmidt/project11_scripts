@@ -89,14 +89,8 @@ export ROS_WORKSPACE="${HOME}/project11/catkin_ws"
 # Launch ROS
 if [ "${SIM}" == 1 ]; then
 	echo "Executing in Simulation Mode." >> ${LAUNCH_LOG_FILE}
-	{
-	roslaunch project11 sim_local.launch
-	} &>> ${LAUNCH_LOG_FILE}
-
-
+	roslaunch project11 sim_local.launch &>> ${LAUNCH_LOG_FILE}
 else
-	{
 	echo "Executing in Live Mode." >> ${LAUNCH_LOG_FILE}
-	roslaunch project11 mystique.launch
-	} &>> ${LAUNCH_LOG_FILE}
+	roslaunch project11 mystique.launch &>> ${LAUNCH_LOG_FILE}
 fi
