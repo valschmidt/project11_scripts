@@ -44,6 +44,10 @@ mkdir -p "${LOGDIR_FULLPATH}/moos"
 mkdir -p "${LOGDIR_FULLPATH}/ros/nodes"
 
 cd "${LOGDIR}"
+
+if [ -L latest ]; then
+	rm latest
+fi
 ln -s "${LOGDIR_FULLPATH}" latest
 
 # Update links to new log location(s).
