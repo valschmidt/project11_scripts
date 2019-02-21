@@ -2,7 +2,7 @@
 
 # inspired by: https://answers.ros.org/question/140426/issues-launching-ros-on-startup/
 
-LOG_FILE=/home/field/project11/log/autostart.txt
+LOG_FILE=${HOME}/project11/log/autostart.txt
 
 echo "" >> ${LOG_FILE}
 echo "#############################################" >> ${LOG_FILE}
@@ -23,5 +23,6 @@ set -e
 set -v
 
 {
-screen -d -m bash /home/field/project11/scripts/start_roslaunch_mystique.sh
+#screen -d -m bash /home/field/project11/scripts/start_roslaunch_mystique.sh
+screen -d -m bash /home/field/project11/scripts/start_project11.sh
 } &>> ${LOG_FILE}
