@@ -1,5 +1,4 @@
-#!/bin/bash
-#
+#!/usr/bin/env bash
 # A script to start the project11 autnoomous system backseat driver.
 #
 # Val Schmidt
@@ -7,24 +6,29 @@
 # School of Marine Science and Ocean Engineering
 # University of New Hampshire
 # 2019
+#
+# Built on the ROS utility function rosrun
 
-LAUNCH_LOG_FILE=${HOME}/project11/log/project11_launch_log.txt
 
-# Check to see if we are executing in simulation mode. 
-if [ "$1" == '-sim' ]; then 
-	SIM=1
-elif [ "$1" == '' ]; then
-	SIM=0
-else 
-	echo "USAGE:"
-	echo "    ./start_project11.sh [-sim]"
+### Begin Project11 specific part. ###
+
+if [ "$1" == "" ]; then
+	echo "USAGE: "
+	echo "    ./start_project11 <launch file>"
+	echo "    Try tab completion."
+	echo "    e.g. ./start_project11 sim_local.launch"
 	exit
+else
+	LAUNCHFILE="${1}"
 fi
 
+## Set up log directory.
 # Setup path names for ROS and NODE log files.
 LOGDIR="${HOME}/project11/log"
 LAUNCHDIRNAME=`date -u --iso-8601=seconds | sed 's/\:/-/g'`
 LOGDIR_FULLPATH="${LOGDIR}/${LAUNCHDIRNAME}"
+
+LAUNCH_LOG_FILE=${HOME}/project11/log/project11_launch_log.txt
 
 # Log some header information.
 touch "${LAUNCH_LOG_FILE}"
@@ -51,19 +55,6 @@ fi
 ln -s "${LOGDIR_FULLPATH}" latest
 
 # Update links to new log location(s).
-#cd "${LOGDIR_FULLPATH}"
-
-# Remove old links.
-#if [ -L "nodes" ]; then
-#	rm nodes
-#fi
-#if [ -L "moos" ]; then
-#	rm moos
-#fi
-# Create new links.
-#ln -s "${LOGDIR_FULLPATH}/nodes"
-#ln -s "${LOGDIR_FULLPATH}/moos"
-
 # If this script has been run already, then ${HOME}/.ros will have been 
 # moved to a previous log directory and ${HOME}/.ros will be a soft link
 # to that place. In that case, we remove the soft link before creating
@@ -86,11 +77,6 @@ source "${HOME}/project11/catkin_ws/devel/setup.bash"
 export ROS_WORKSPACE="${HOME}/project11/catkin_ws"
 } &>> ${LAUNCH_LOG_FILE}
 
-# Launch ROS
-if [ "${SIM}" == 1 ]; then
-	echo "Executing in Simulation Mode." >> ${LAUNCH_LOG_FILE}
-	roslaunch project11 sim_local.launch &>> ${LAUNCH_LOG_FILE}
-else
-	echo "Executing in Live Mode." >> ${LAUNCH_LOG_FILE}
-	roslaunch project11 mystique.launch &>> ${LAUNCH_LOG_FILE}
-fi
+## Now start ROS.
+echo "Executing ROS" >> ${LAUNCH_LOG_FILE}
+roslaunch project11 "${LAUNCHFILE}" & >> ${LAUNCH_LOG_FILE}
