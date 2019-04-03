@@ -22,13 +22,15 @@ else
 	LAUNCHFILE="${1}"
 fi
 
+PROJECT11DIR=`rospack find project11 | sed 's/\/catkin_ws\/src\/project11//'`
+
 ## Set up log directory.
 # Setup path names for ROS and NODE log files.
-LOGDIR="${HOME}/project11/log"
+LOGDIR="${PROJECT11DIR}/log"
 LAUNCHDIRNAME=`date -u --iso-8601=seconds | sed 's/\:/-/g'`
 LOGDIR_FULLPATH="${LOGDIR}/${LAUNCHDIRNAME}"
 
-LAUNCH_LOG_FILE=${HOME}/project11/log/project11_launch_log.txt
+LAUNCH_LOG_FILE=${PROJECT11DIR}/log/project11_launch_log.txt
 
 # Log some header information.
 touch "${LAUNCH_LOG_FILE}"
@@ -79,4 +81,4 @@ export ROS_WORKSPACE="${HOME}/project11/catkin_ws"
 
 ## Now start ROS.
 echo "Executing ROS" >> ${LAUNCH_LOG_FILE}
-roslaunch project11 "${LAUNCHFILE}" & >> ${LAUNCH_LOG_FILE}
+roslaunch project11 "${LAUNCHFILE}" | tee ${LAUNCH_LOG_FILE}

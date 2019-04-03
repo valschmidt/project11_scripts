@@ -24,5 +24,5 @@ set -v
 
 {
 #screen -d -m bash /home/field/project11/scripts/start_roslaunch_mystique.sh
-screen -d -m bash /home/field/project11/scripts/start_project11.sh
+screen -d -m bash /home/field/project11/scripts/start_project11.sh mystique.launch
 } &>> ${LOG_FILE}
